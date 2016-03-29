@@ -38,6 +38,15 @@ public class DatabaseTools {
         return newRowId;
     }
 
+    public int deleteEvent(long id){
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String selection = CountdownEventReaderContract.CountdownEventEntry._ID + " LIKE ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        int rowsAffected = db.delete(CountdownEventReaderContract.CountdownEventEntry.TABLE_NAME, selection, selectionArgs);
+        db.close();
+        return rowsAffected;
+    }
+
     public Cursor getAllEvents(){
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
@@ -59,15 +68,51 @@ public class DatabaseTools {
                 null,                                     // don't filter by row groups
                 null                                      // The sort order
         );
+        db.close();
         return c;
     }
 
     public ArrayList<CountdownEvent> getCoutdownEvents(){
         Cursor c = getAllEvents();
-        c.moveToFirst();
-        long itemId = c.getLong(
-                c.getColumnIndexOrThrow(CountdownEventReaderContract.CountdownEventEntry._ID)
-        );
+        return getEventsFromCursor(c);
+    }
+
+    private ArrayList<CountdownEvent> getEventsFromCursor(Cursor c){
+        ArrayList<CountdownEvent> events = new ArrayList<CountdownEvent>();
+        if(c!=null){
+            if(c.moveToFirst()){
+                do{
+                    long id = c.getLong(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry._ID));
+                    String title = c.getString(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_TITLE));
+                    String datetime = c.getString(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_DATETIME));
+                    String background = c.getString(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_COLOR));
+                    events.add(new CountdownEvent(id,title,datetime,background));
+                }while(c.moveToNext());
+            }
+        }
+        return events;
+    }
+
+    public int updateRecord(long id, String title, String datetime, String background){
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_TITLE, title);
+        values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_DATETIME, datetime);
+        values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_COLOR, background);
+
+        // Which row to update, based on the ID
+        String selection = CountdownEventReaderContract.CountdownEventEntry._ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(id) };
+
+        int count = db.update(
+                CountdownEventReaderContract.CountdownEventEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+        db.close();
+        return count;
     }
 
 }
