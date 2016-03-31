@@ -9,6 +9,8 @@ public class CountdownEvent {
     private String mDatetime;
     private String mBackground;
 
+    public CountdownEvent(){}
+
     public CountdownEvent(long id, String title, String datetime, String background){
         mId = id;
         mTitle = title;
