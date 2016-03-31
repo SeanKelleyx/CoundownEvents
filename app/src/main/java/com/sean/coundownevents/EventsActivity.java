@@ -1,5 +1,6 @@
 package com.sean.coundownevents;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -63,19 +64,25 @@ public class EventsActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CountdownEvent event = new CountdownEvent();
-                    testInt++;
-                    event.setTitle("Event Title #"+testInt);
-                    event.setDatetime("Event datetime #"+testInt);
-                    event.setBackground("Background #"+testInt);
-                    mDb.insert(event);
-                    updateEvents();
+//                    CountdownEvent event = new CountdownEvent();
+//                    testInt++;
+//                    event.setTitle("Event Title #"+testInt);
+//                    event.setDatetime("Event datetime #"+testInt);
+//                    event.setBackground("Background #"+testInt);
+//                    mDb.insert(event);
+//                    updateEvents();
+                    launchEventBuilder(view);
                     Snackbar.make(view, "Will do something sometime!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             });
         }
 
+    }
+
+    private void launchEventBuilder(View view) {
+        Intent intent = new Intent(this, EventBuilderActivity.class);
+        startActivity(intent);
     }
 
 
