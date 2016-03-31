@@ -43,15 +43,12 @@ public class DatabaseTools {
         String selection = CountdownEventReaderContract.CountdownEventEntry._ID + " LIKE ?";
         String[] selectionArgs = {String.valueOf(id)};
         int rowsAffected = db.delete(CountdownEventReaderContract.CountdownEventEntry.TABLE_NAME, selection, selectionArgs);
-        db.close();
         return rowsAffected;
     }
 
     public Cursor getAllEvents(){
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
         String[] projection = {
                 CountdownEventReaderContract.CountdownEventEntry._ID,
                 CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_TITLE,
@@ -68,7 +65,6 @@ public class DatabaseTools {
                 null,                                     // don't filter by row groups
                 null                                      // The sort order
         );
-        db.close();
         return c;
     }
 
@@ -111,7 +107,6 @@ public class DatabaseTools {
                 values,
                 selection,
                 selectionArgs);
-        db.close();
         return count;
     }
 
