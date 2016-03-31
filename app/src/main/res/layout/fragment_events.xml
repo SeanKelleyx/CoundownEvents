@@ -6,11 +6,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sean.coundownevents.EventsActivity$PlaceholderFragment">
+    tools:context="com.sean.coundownevents.EventsActivity$PlaceholderFragment"
+                android:background="#ffffff">
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/event_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="title"/>
+
+    <TextView
+        android:id="@+id/event_datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="datetime"
+        android:layout_below="@+id/event_title"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/event_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/event_datetime"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
