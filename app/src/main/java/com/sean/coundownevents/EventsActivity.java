@@ -68,7 +68,7 @@ public class EventsActivity extends AppCompatActivity {
                     event.setTitle("Event Title #"+testInt);
                     event.setDatetime("Event datetime #"+testInt);
                     event.setBackground("Background #"+testInt);
-                    mEvents.add(event);
+                    mDb.insert(event);
                     updateEvents();
                     Snackbar.make(view, "Will do something sometime!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -172,8 +172,7 @@ public class EventsActivity extends AppCompatActivity {
     }
 
     public void updateEvents(){
-        //TODO will want to pull from db?
-//        mEvents = mDb.getCoutdownEvents();
+        mEvents = mDb.getCoutdownEvents();
         mEventsPagerAdapter.notifyDataSetChanged();
     }
 }
