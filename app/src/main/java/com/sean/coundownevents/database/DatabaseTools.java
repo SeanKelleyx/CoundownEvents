@@ -27,7 +27,7 @@ public class DatabaseTools {
         ContentValues values = new ContentValues();
         values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_TITLE, event.getTitle());
         values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_DATETIME, event.getDatetime());
-        values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_COLOR, event.getBackground());
+        values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_IMAGE, event.getBackground());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
@@ -53,7 +53,7 @@ public class DatabaseTools {
                 CountdownEventReaderContract.CountdownEventEntry._ID,
                 CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_TITLE,
                 CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_DATETIME,
-                CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_COLOR
+                CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_IMAGE
         };
 
         Cursor c = db.query(
@@ -80,8 +80,8 @@ public class DatabaseTools {
                 do{
                     long id = c.getLong(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry._ID));
                     String title = c.getString(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_TITLE));
-                    String datetime = c.getString(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_DATETIME));
-                    String background = c.getString(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_COLOR));
+                    long datetime = c.getLong(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_DATETIME));
+                    byte[] background = c.getBlob(c.getColumnIndex(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_IMAGE));
                     events.add(new CountdownEvent(id,title,datetime,background));
                 }while(c.moveToNext());
             }
@@ -89,14 +89,14 @@ public class DatabaseTools {
         return events;
     }
 
-    public int updateRecord(long id, String title, String datetime, String background){
+    public int updateRecord(long id, String title, String datetime, byte[] background){
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         // New value for one column
         ContentValues values = new ContentValues();
         values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_TITLE, title);
         values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_EVENT_DATETIME, datetime);
-        values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_COLOR, background);
+        values.put(CountdownEventReaderContract.CountdownEventEntry.COLUMN_NAME_BACKGROUND_IMAGE, background);
 
         // Which row to update, based on the ID
         String selection = CountdownEventReaderContract.CountdownEventEntry._ID + " LIKE ?";
