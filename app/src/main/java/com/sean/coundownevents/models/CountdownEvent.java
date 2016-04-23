@@ -6,12 +6,12 @@ package com.sean.coundownevents.models;
 public class CountdownEvent {
     private long mId;
     private String mTitle;
-    private String mDatetime;
-    private String mBackground;
+    private long mDatetime;
+    private byte[] mBackground;
 
     public CountdownEvent(){}
 
-    public CountdownEvent(long id, String title, String datetime, String background){
+    public CountdownEvent(long id, String title, Long datetime, byte[] background){
         mId = id;
         mTitle = title;
         mDatetime = datetime;
@@ -34,19 +34,19 @@ public class CountdownEvent {
         mTitle = title;
     }
 
-    public String getDatetime() {
+    public long getDatetime() {
         return mDatetime;
     }
 
-    public void setDatetime(String datetime) {
+    public void setDatetime(Long datetime) {
         mDatetime = datetime;
     }
 
-    public String getBackground() {
+    public byte[] getBackground() {
         return mBackground;
     }
 
-    public void setBackground(String background) {
+    public void setBackground(byte[] background) {
         mBackground = background;
     }
 }
