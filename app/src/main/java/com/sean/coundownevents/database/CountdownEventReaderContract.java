@@ -14,7 +14,7 @@ public class CountdownEventReaderContract {
     public static abstract class CountdownEventEntry implements BaseColumns {
         public static final String TABLE_NAME = "events";
         public static final String COLUMN_NAME_EVENT_TITLE = "title";
-        public static final String COLUMN_NAME_BACKGROUND_COLOR = "color";
+        public static final String COLUMN_NAME_BACKGROUND_IMAGE = "image";
         public static final String COLUMN_NAME_EVENT_DATETIME = "datetime";
     }
 
