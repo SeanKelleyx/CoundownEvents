@@ -27,6 +27,7 @@ import com.sean.coundownevents.models.CountdownEvent;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class EventsActivity extends AppCompatActivity {
 
@@ -126,6 +127,55 @@ public class EventsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static int daysBetween(Calendar day1, Calendar day2){
+        Calendar dayOne = (Calendar) day1.clone(),
+                dayTwo = (Calendar) day2.clone();
+
+        if (dayOne.get(Calendar.YEAR) == dayTwo.get(Calendar.YEAR)) {
+            return Math.abs(dayOne.get(Calendar.DAY_OF_YEAR) - dayTwo.get(Calendar.DAY_OF_YEAR));
+        } else {
+            if (dayTwo.get(Calendar.YEAR) > dayOne.get(Calendar.YEAR)) {
+                //swap them
+                Calendar temp = dayOne;
+                dayOne = dayTwo;
+                dayTwo = temp;
+            }
+            int extraDays = 0;
+
+            int dayOneOriginalYearDays = dayOne.get(Calendar.DAY_OF_YEAR);
+
+            while (dayOne.get(Calendar.YEAR) > dayTwo.get(Calendar.YEAR)) {
+                dayOne.add(Calendar.YEAR, -1);
+                // getActualMaximum() important for leap years
+                extraDays += dayOne.getActualMaximum(Calendar.DAY_OF_YEAR);
+            }
+
+            return extraDays - dayTwo.get(Calendar.DAY_OF_YEAR) + dayOneOriginalYearDays ;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) return;
+        updateEvents();
+    }
+
+    public void loadBitmap(byte[] bitmapArray, ImageView imageView, String imageKey) {
+        final Bitmap bitmap = mMemoryCache.get(imageKey);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            BitmapWorkerTask task = new BitmapWorkerTask(imageView,bitmapArray, imageKey);
+            task.execute(0);
+        }
+    }
+
+    public void updateEvents() {
+        mEvents = mDb.getCoutdownEvents();
+        mEventsPagerAdapter.notifyDataSetChanged();
+    }
+
     /**
      * A fragment containing the event view.
      */
@@ -165,11 +215,19 @@ public class EventsActivity extends AppCompatActivity {
             TextView datetimeView = (TextView) rootView.findViewById(R.id.event_datetime);
             ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
             titleView.setText(getArguments().getString(ARG_EVENT_TITLE));
-            datetimeView.setText(getArguments().getLong(ARG_EVENT_DATETIME) + "");
+            datetimeView.setText(getCountdownDays(getArguments().getLong(ARG_EVENT_DATETIME)) + "");
             byte[] background = getArguments().getByteArray(ARG_EVENT_BACKGROUND);
             int position = getArguments().getInt(ARG_EVENT_POSITION);
-            ((EventsActivity) getActivity()).loadBitmap(background, imageView, position+"");
+            ((EventsActivity) getActivity()).loadBitmap(background, imageView, position + "");
             return rootView;
+        }
+
+        private String getCountdownDays(long datetime) {
+            Calendar today = Calendar.getInstance();
+            Calendar event = Calendar.getInstance();
+            event.setTimeInMillis(datetime);
+            int days = daysBetween(today, event);
+            return days+"";
         }
     }
 
@@ -177,7 +235,6 @@ public class EventsActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-//    public class EventsPagerAdapter extends FragmentStatePagerAdapter {
     public class EventsPagerAdapter extends FragmentPagerAdapter {
 
 
@@ -207,29 +264,8 @@ public class EventsActivity extends AppCompatActivity {
         }
     }
 
-    public void updateEvents(){
-        mEvents = mDb.getCoutdownEvents();
-        mEventsPagerAdapter.notifyDataSetChanged();
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK) return;
-        updateEvents();
-    }
-
-    public void loadBitmap(byte[] bitmapArray, ImageView imageView, String imageKey) {
-        final Bitmap bitmap = mMemoryCache.get(imageKey);
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
-        } else {
-            BitmapWorkerTask task = new BitmapWorkerTask(imageView,bitmapArray, imageKey);
-            task.execute(0);
-        }
-    }
-
-    class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
+    protected class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private byte[] bimapByteArray = null;
         private String iKey = "";
