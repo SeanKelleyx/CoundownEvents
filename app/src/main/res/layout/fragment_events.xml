@@ -8,36 +8,47 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"/>
+        android:id="@+id/imageView"
+        android:contentDescription="image selected for countdown background"
+        android:background="#bc1515"
+        android:scaleType="centerCrop"/>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
-
-        <TextView
-            android:id="@+id/event_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="title"/>
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_centerInParent="true"
+        android:background="#6dffffff">
 
         <TextView
             android:id="@+id/event_datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="datetime"
-            android:layout_below="@+id/event_title"
-            android:layout_alignParentStart="true"/>
+            android:textSize="24dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
-            android:id="@+id/event_background"
+            android:id="@+id/days_till_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/event_datetime"
-            android:layout_alignParentStart="true"/>
+            android:text="Days Until"
+            android:textSize="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/event_datetime"/>
+
+        <TextView
+            android:id="@+id/event_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:layout_centerHorizontal="true"
+            android:textSize="24dp"
+            android:layout_below="@+id/days_till_label"/>
+
 
     </RelativeLayout>
 
