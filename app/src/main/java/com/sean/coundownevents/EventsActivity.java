@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sean.coundownevents.database.DatabaseTools;
+import com.sean.coundownevents.models.ColorWheel;
 import com.sean.coundownevents.models.CountdownEvent;
 
 import java.lang.ref.WeakReference;
@@ -65,6 +66,7 @@ public class EventsActivity extends AppCompatActivity {
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setBackgroundColor(ColorWheel.getColor());
         mViewPager.setAdapter(mEventsPagerAdapter);
 
 
@@ -208,17 +210,19 @@ public class EventsActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_events, container, false);
             TextView titleView = (TextView) rootView.findViewById(R.id.event_title);
             TextView datetimeView = (TextView) rootView.findViewById(R.id.event_datetime);
             ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+            imageView.setBackgroundColor(ColorWheel.getColor());
             titleView.setText(getArguments().getString(ARG_EVENT_TITLE));
             datetimeView.setText(getCountdownDays(getArguments().getLong(ARG_EVENT_DATETIME)) + "");
             byte[] background = getArguments().getByteArray(ARG_EVENT_BACKGROUND);
             int position = getArguments().getInt(ARG_EVENT_POSITION);
-            ((EventsActivity) getActivity()).loadBitmap(background, imageView, position + "");
+            if(background != null){
+                ((EventsActivity) getActivity()).loadBitmap(background, imageView, position + "");
+            }
             return rootView;
         }
 
