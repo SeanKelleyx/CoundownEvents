@@ -70,14 +70,7 @@ public class EventBuilderActivity extends AppCompatActivity {
     }
 
     private boolean validateNewEvent() {
-        if(titleExists() && datetimeIsValid() && backgroundIsValid()){
-            return true;
-        }
-        return false;
-    }
-
-    private boolean backgroundIsValid() {
-        if(mSelectedImage != null){
+        if(titleExists() && datetimeIsValid()){
             return true;
         }
         return false;
