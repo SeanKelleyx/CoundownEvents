@@ -68,13 +68,6 @@
             android:layout_centerHorizontal="true"
             android:onClick="getImage"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Color"
-            android:id="@+id/choose_background_color_button"
-            android:layout_centerHorizontal="true"/>
-
     </LinearLayout>
 
     <TextView
