@@ -51,6 +51,7 @@ public class EventsActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private View mVeryFarBackgroundView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +65,11 @@ public class EventsActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the Events
         mEventsPagerAdapter = new EventsPagerAdapter(getSupportFragmentManager());
 
+        mVeryFarBackgroundView = findViewById(R.id.main_content);
+        mVeryFarBackgroundView.setBackgroundColor(ColorWheel.getColor());
+
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setBackgroundColor(ColorWheel.getColor());
         mViewPager.setAdapter(mEventsPagerAdapter);
 
 
