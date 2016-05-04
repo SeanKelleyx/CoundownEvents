@@ -11,7 +11,8 @@
         <activity
             android:name=".EventsActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -22,7 +23,8 @@
             android:name=".EventBuilderActivity"
             android:label="@string/title_activity_event_builder"
             android:parentActivityName=".EventsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.sean.coundownevents.EventsActivity"/>
